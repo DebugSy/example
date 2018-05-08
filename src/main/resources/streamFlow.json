@@ -1,0 +1,109 @@
+{
+  "id": "4758fc21-edfa-44bc-846f-19e3065bbe65",
+  "name": "default/admin/shiy/socket_example",
+  "flowType": "streamflow",
+  "source": "rhinos",
+  "steps": [{
+    "id": "source_0",
+    "name": "source_0",
+    "type": "source",
+    "x": 180,
+    "y": 153,
+    "outputConfigurations": [{
+      "id": "output",
+      "fields": [{
+        "column": "id",
+        "alias": "id"
+      }, {
+        "column": "name",
+        "alias": "name"
+      }, {
+        "column": "age",
+        "alias": "age"
+      }
+      ]
+    }
+    ],
+    "otherConfigurations": {
+      "schema": "shiy_test",
+      "id": "da806a49-b9c6-426d-9e24-c4eabfcfd82f",
+      "dataset": "shiy/shiy_kafka"
+    }
+  }, {
+    "id": "sink_0",
+    "name": "sink_0",
+    "type": "sink",
+    "x": 940,
+    "y": 314,
+    "inputConfigurations": [{
+      "id": "input",
+      "fields": [{
+        "column": "id"
+      }, {
+        "column": "name"
+      }, {
+        "column": "age"
+      }
+      ]
+    }
+    ],
+    "otherConfigurations": {
+      "schema": "shiy_test",
+      "brokers": "",
+      "description": "",
+      "type": "HDFS",
+      "nullValue": "",
+      "recursive": false,
+      "sql": "",
+      "path": "/tmp/shiy/data/output_socket_output",
+      "password": "123456",
+      "relativePath": "output_socket",
+      "id": "ad69617f-72c2-447a-9f27-95c893d2efeb",
+      "table": "",
+      "quoteChar": "\"",
+      "escapeChar": "\\",
+      "sliceTimeColumn": "",
+      "format": "csv",
+      "separator": ",",
+      "url": "",
+      "expiredTime": 0,
+      "driver": "",
+      "topic": "",
+      "header": false,
+      "dataset": "shiy/shiy_test_socket_output",
+      "user": "admin",
+      "sliceType": ""
+    }
+  }
+  ],
+  "links": [{
+    "name": "",
+    "source": "source_0",
+    "sourceOutput": "output",
+    "target": "sink_0",
+    "targetInput": "input"
+  }
+  ],
+  "oid": "a649874d-f099-40d2-848d-07e5eb87b4e8",
+  "creator": "admin",
+  "createTime": 1522748387463,
+  "lastModifier": "admin",
+  "lastModifiedTime": 1522750418566,
+  "owner": "admin",
+  "version": 5,
+  "enabled": 1,
+  "moduleVersion": 170616,
+  "tenant": "default",
+  "solrdocVersion": "1596719542899310592",
+  "nameDuplicatable": false,
+  "parameters": [{
+    "name": "dataset",
+    "category": "ref",
+    "refs": ["source_0.dataset"],
+    "defaultVal": "shiy/shiy_kafka",
+    "description": ""
+  }
+  ],
+  "expiredPeriod": 251879466013,
+  "idPrefix": "cfh"
+}
