@@ -4,6 +4,7 @@ import com.inforefiner.europa.client.DataInportClient;
 import com.inforefiner.europa.entity.FieldMapping;
 import com.inforefiner.europa.entity.SyncTask;
 import com.inforefiner.europa.rpc.dto.task.source.DataSource;
+import com.inforefiner.europa.rpc.dto.task.source.SocketDataSource;
 import com.inforefiner.europa.rpc.dto.task.store.DataStore;
 import com.inforefiner.europa.utils.DataSources;
 import com.inforefiner.europa.utils.DataStores;
@@ -23,14 +24,16 @@ public class SocketCollector {
 		//login to the server
 		client.login("node2", "8514", "admin", "123456", "europa-3.0.0.49-20180330");
 
-		//1. get syncTask by jobId
+//		//1. get syncTask by jobId
 		SyncTask syncTask = client.getCollectorTask("3eb54b38-617c-4b0e-9975-3ead779c3774");
 
 		//or use code to create syncTask
-		//operateType -- 0: 原样, 1: 抽取, 2: 分割, 3: 过滤
+		//operateType -- 0: 原样, 1: 抽取, 2: 分割, 3: 过滤, 4:多正则
 		DataSource dataSource = DataSources.dataSource().operateType(4).socketDataSource("node3", 9083, "TCP",
 				"{\"a1\": \"(?<id>(\\\\d+)),(?<name>(\\\\w+))\",\"a2\": \"(?<id>(\\\\d+)),(?<age>(\\\\d+))\"}",
-				"05e134fb-0c91-4a85-b8da-cee69e6cc9ec", "shiy_socket_schema").build();
+				"05e134fb-0c91-4a85-b8da-cee69e6cc9ec", "shiy_socket_schema")
+				.defaultsMap("{\"name\":\"defaultName\",\"age\":\"9999\"}")
+				.build();
 
 		DataStore dataStore = DataStores.dataStore().kafkaDataStore("node1:2181,node2:2181,node3:2181/linkoop33/kafka333",
 				"node3:9092","test11", "0.10", ",").build();
@@ -46,7 +49,7 @@ public class SocketCollector {
 
 		//2. create a syncTask
 		syncTask.setName(syncTask.getName().concat("_copy_by_client"));
-		String syncJobId = client.createSyncJob(syncTask);//client.createSyncJob(task)
+		String syncJobId = client.createSyncJob(task);//client.createSyncJob(task)
 		syncTask.setJobId(syncJobId);
 
 		//3. start a syncJob
